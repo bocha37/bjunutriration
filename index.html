@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Калькулятор БЖУ</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Калькулятор БЖУ</h1>
+    <form id="bju-form">
+      <label>Пол:</label>
+      <select id="gender">
+        <option value="male">Мужской</option>
+        <option value="female">Женский</option>
+      </select>
+
+      <label>Вес (кг):</label>
+      <input type="number" id="weight" required />
+
+      <label>Рост (см):</label>
+      <input type="number" id="height" required />
+
+      <label>Возраст:</label>
+      <input type="number" id="age" required />
+
+      <label>Активность:</label>
+      <select id="activity">
+        <option value="1.2">Минимальная</option>
+        <option value="1.375">Легкая</option>
+        <option value="1.55">Средняя</option>
+        <option value="1.725">Высокая</option>
+        <option value="1.9">Очень высокая</option>
+      </select>
+
+      <label>Цель:</label>
+      <select id="goal">
+        <option value="0.85">Медленное похудение</option>
+        <option value="0.8">Быстрое похудение</option>
+        <option value="1.0" selected>Поддержание</option>
+        <option value="1.1">Лёгкий набор мышц</option>
+        <option value="1.2">Активный набор мышц</option>
+      </select>
+
+      <button type="submit">Рассчитать</button>
+    </form>
+
+    <div id="difference" class="hidden">
+      <h2>Дефицит / Профицит</h2>
+      <p id="difference-text"></p>
+    </div>
+
+    <div id="water-result" class="hidden">
+      <h2>Норма воды</h2>
+      <p><span id="water"></span> мл в день</p>
+    </div>
+
+    <div id="result" class="hidden">
+      <h2>Результат:</h2>
+      <p><strong>Калории:</strong> <span id="calories"></span></p>
+      <p><strong>Белки:</strong> <span id="proteins"></span> г</p>
+      <p><strong>Жиры:</strong> <span id="fats"></span> г</p>
+      <p><strong>Углеводы:</strong> <span id="carbs"></span> г</p>
+    </div>
+
+    <div id="workout" class="hidden">
+      <h2>Рекомендации по тренировкам</h2>
+      <p id="workout-text"></p>
+    </div>
+
+    <div id="ration" class="hidden">
+      <h2>Рекомендуемый рацион</h2>
+      <ul id="ration-list"></ul>
+    </div>
+  </div>
+
+  <!-- Ссылка на рацион -->
+  <div class="mt-4 text-center">
+    <a href="ration.html" class="text-purple-400 hover:underline">→ Посмотреть пример рациона на неделю</a>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
