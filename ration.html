@@ -94,7 +94,7 @@
       </button>
     </div>
 
-<button onclick="loadProducts()" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded text-sm mt-4">
+<button id="toggleProductsBtn" onclick="toggleProducts()" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded text-sm mt-4">
   Показать все продукты
 </button>
 
@@ -623,29 +623,65 @@
     renderDay();
   }
 
-  function loadProducts() {
-    fetch('products.json')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error("Не удалось загрузить файл JSON");
-        }
-        return response.json();
-      })
-      .then(data => {
-        const list = document.getElementById("products");
-        list.innerHTML = "";
-        data.products.forEach(product => {
-          const li = document.createElement("li");
-          li.className = "bg-gray-800 p-2 rounded-md text-sm";
-          li.textContent = `${product.name} | Ккал: ${product.calories} | Б: ${product.proteins} г | Ж: ${product.fats} г | У: ${product.carbs} г`;
-          list.appendChild(li);
-        });
-        document.getElementById("product-list").classList.remove("hidden");
-      })
-      .catch(error => {
-        alert("Ошибка загрузки базы продуктов: " + error.message);
-      });
+  // Функция для вывода продуктов
+let productsLoaded = false;
+
+function toggleProducts() {
+  const productListContainer = document.getElementById("product-list");
+  const button = document.getElementById("toggleProductsBtn");
+
+  // Если уже загружено, просто скрыть/показать
+  if (productsLoaded) {
+    if (!productListContainer.classList.contains("hidden")) {
+      productListContainer.classList.add("hidden");
+      button.textContent = "Показать все продукты";
+    } else {
+      productListContainer.classList.remove("hidden");
+      button.textContent = "Скрыть продукты";
+    }
+    return;
   }
+
+  // Загружаем продукты один раз
+  fetch('products.json')
+    .then(res => {
+      if (!res.ok) throw new Error("Не удалось загрузить products.json");
+      return res.json();
+    })
+    .then(data => {
+      const productList = document.getElementById("products");
+      productList.innerHTML = "";
+
+      data.categories.forEach(category => {
+        const h3 = document.createElement("h3");
+        h3.textContent = category.name;
+        h3.className = "mt-4 mb-2 font-bold text-purple-400";
+        productList.appendChild(h3);
+
+        const ul = document.createElement("ul");
+        category.items.forEach(item => {
+          const li = document.createElement("li");
+          li.textContent = `${item.name} — ${item.calories} ккал | Б: ${item.proteins} г / Ж: ${item.fats} г / У: ${item.carbs} г`;
+          li.className = "ml-4 list-disc text-sm";
+          ul.appendChild(li);
+        });
+
+        productList.appendChild(ul);
+      });
+
+      // Отметим, что продукты загружены
+      productsLoaded = true;
+
+      // Покажем список
+      productListContainer.classList.remove("hidden");
+      button.textContent = "Скрыть продукты";
+    })
+    .catch(err => {
+      console.error("Ошибка загрузки JSON:", err.message);
+      alert("Ошибка: не удалось загрузить базу продуктов");
+    });
+}
+  
 </script>
 </body>
 </html>
